@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package aiGoals;
+
+// =======================
+// REQUEST STRUCTURE
+// =======================
+
+message PersonalizedCarePlanRequest {
+  PromptTemplate prompt_template = 1;
+  ClientData client_data = 2;
+  map<string, DomainLevels> domain_definitions = 3;
+}
+
+message PromptTemplate {
+  string template = 1;
+}
+
+message ClientData {
+  int32 age = 1;
+  string living_situation = 2;
+  string education_level = 3;
+  string domain_name = 4;
+  int32 current_level = 5;
+  string level_description = 6;
+}
+
+message DomainLevels {
+  map<int32, string> levels = 1;
+}
+
+// =======================
+// RESPONSE STRUCTURE
+// =======================
+
+message PersonalizedCarePlanResponse {
+  ClientProfile client_profile = 1;
+  string assessment_summary = 2;
+  CarePlanObjectives care_plan_objectives = 3;
+  Interventions interventions = 4;
+  repeated string resources_required = 5;
+  repeated SuccessMetric success_metrics = 6;
+  repeated RiskFactor risk_factors = 7;
+  repeated SupportRole support_network = 8;
+  ReviewSchedule review_schedule = 9;
+  repeated string emergency_protocols = 10;
+  TransitionCriteria transition_criteria = 11;
+}
+
+message ClientProfile {
+  int32 age = 1;
+  string living_situation = 2;
+  string education_level = 3;
+  string assessment_domain = 4;
+  int32 current_level = 5;
+  string level_description = 6;
+}
+
+message CarePlanObjectives {
+  repeated Goal short_term_goals = 1;
+  repeated Goal medium_term_goals = 2;
+  repeated Goal long_term_goals = 3;
+}
+
+message Goal {
+  string timeframe = 1;
+  string goal_title = 2;
+  string description = 3;
+  repeated string specific_actions = 4;
+}
+
+message Interventions {
+  repeated string daily_activities = 1;
+  repeated string weekly_activities = 2;
+  repeated string monthly_activities = 3;
+}
+
+message SuccessMetric {
+  string metric = 1;
+  string target = 2;
+  string measurement_method = 3;
+}
+
+message RiskFactor {
+  string risk = 1;
+  string mitigation = 2;
+}
+
+message SupportRole {
+  string role = 1;
+  string responsibility = 2;
+}
+
+message ReviewSchedule {
+  string daily = 1;
+  string weekly = 2;
+  string monthly = 3;
+  string quarterly = 4;
+}
+
+message TransitionCriteria {
+  int32 next_level = 1;
+  repeated string requirements = 2;
+}
+
+// =======================
+// gRPC SERVICE
+// =======================
+
+service CarePlanner {
+  rpc GenerateCarePlan(PersonalizedCarePlanRequest) returns (PersonalizedCarePlanResponse);
+}
