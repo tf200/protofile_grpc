@@ -1,7 +1,8 @@
 syntax = "proto3";
 
-package grpc;
+package grpclient;
 
+option go_package = "maicare_go/grpclient";
 // =======================
 // REQUEST STRUCTURE
 // =======================
