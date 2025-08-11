@@ -80,6 +80,7 @@ message SuccessMetric {
 message RiskFactor {
   string risk = 1;
   string mitigation = 2;
+  string risk_level = 3;
 }
 
 message SupportRole {
