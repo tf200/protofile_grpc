@@ -1,0 +1,21 @@
+syntax = "proto3";
+package grpclient;
+option go_package = "maicare_go/grpclient";
+
+// =======================
+// REQUEST STRUCTURE
+// =======================
+message CorrectSpellingRequest {
+    string initial_text = 1;
+}
+
+message CorrectSpellingResponse {
+    string corrected_text = 1;
+}
+
+// =======================
+// gRPC SERVICE
+// =======================
+service SpellingCorrection {
+    rpc CorrectSpelling(CorrectSpellingRequest) returns (CorrectSpellingResponse);
+}
