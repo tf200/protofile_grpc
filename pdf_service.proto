@@ -1,0 +1,196 @@
+syntax = "proto3";
+
+package grpclient;
+option go_package = "maicare_go/grpclient";
+
+
+message GenerateAppointmentCardRequest {
+    int64 id = 1;
+    string client_name = 2;
+    string date = 3;
+    string mentor = 4;
+    repeated string general_information = 5;
+    repeated string important_contacts = 6;
+    repeated string household_info = 7;
+    repeated string organization_agreements = 8;
+    repeated string youth_officer_agreements = 9;
+    repeated string treatment_agreements = 10;
+    repeated string smoking_rules = 11;
+    repeated string work = 12;
+    repeated string school_internship = 13;
+    repeated string travel = 14;
+    repeated string leave = 15;
+}
+
+message GenerateAppointmentCardResponse {
+    string pdf_file_key = 1;
+}
+
+
+message GenerateContractRequest {
+    // Header Information
+    int64 contract_id = 1;
+    string status = 2;
+
+    // Contract Periods
+    string start_date = 3;
+    string end_date = 4;
+    int32 reminder_period = 5;
+
+    // Parties
+    string sender_name = 6;
+    string sender_address = 7;
+    string sender_contact_info = 8;
+
+    string client_first_name = 9;
+    string client_last_name = 10;
+    string client_address = 11;
+    string client_contact_info = 12;
+
+    // Care Specifications
+    string care_type = 13;
+    string care_name = 14;
+    string financing_act = 15;
+    string financing_option = 16;
+
+    // Ambulante Care Hours
+    double hours = 17;
+    string hours_type = 18;
+    string ambulante_display = 19;
+
+    // Financial Terms
+    double price = 20;
+    string price_time_unit = 21;
+    double vat = 22;
+    string type_name = 23;
+    string generation_date = 24;
+}
+
+message GenerateContractResponse {
+    string pdf_file_key = 1;
+}
+
+
+
+message GenerateIncidentReportRequest {
+    // Basic Information
+    int64 id = 1;
+    int64 employee_id = 2;
+    string employee_first_name = 3;
+    string employee_last_name = 4;
+    int64 location_id = 5;
+    string reporter_involvement = 6;
+    repeated string inform_who = 7;
+
+    // Incident Details
+    string incident_date = 8;
+    string runtime_incident = 9;
+    string incident_type = 10;
+
+    // Incident Categories (boolean flags)
+    bool passing_away = 11;
+    bool self_harm = 12;
+    bool violence = 13;
+    bool fire_water_damage = 14;
+    bool accident = 15;
+    bool client_absence = 16;
+    bool medicines = 17;
+    bool organization = 18;
+    bool use_prohibited_substances = 19;
+    bool other_notifications = 20;
+
+    // Assessment and Analysis
+    string severity_of_incident = 21;
+    string incident_explanation = 22;
+    string recurrence_risk = 23;
+    string incident_prevent_steps = 24;
+    string incident_taken_measures = 25;
+
+    // Causes Categories
+    repeated string technical = 26;
+    repeated string organizational = 27;
+    repeated string mese_worker = 28;
+    repeated string client_options = 29;
+    string other_cause = 30;
+    string cause_explanation = 31;
+
+    // Impact Assessment
+    string physical_injury = 32;
+    string physical_injury_desc = 33;
+    string psychological_damage = 34;
+    string psychological_damage_desc = 35;
+    string needed_consultation = 36;
+
+    // Succession and Follow-up
+    repeated string succession = 37;
+    string succession_desc = 38;
+    bool other = 39;
+    string other_desc = 40;
+    string additional_appointments = 41;
+    string employee_absenteeism = 42;
+
+    // Additional Information
+    int64 client_id = 43;
+    string client_firstname = 44;
+    string client_lastname = 45;
+    string location_name = 46;
+}
+
+message GenerateIncidentReportResponse {
+    string pdf_file_key = 1;
+}
+
+
+message InvoicePeriod {
+    string start_date = 1;
+    string end_date = 2;
+    string accommodation_time_frame = 3;
+    double ambulante_total_minutes = 4;
+}
+
+message InvoiceDetail {
+    string care_type = 1;
+    repeated InvoicePeriod periods = 2;
+    double price = 3;
+    string price_time_unit = 4;
+    double pre_vat_total = 5;
+    double total = 6;
+}
+
+message GenerateInvoicePdfRequest {
+    // Basic Information
+    int64 id = 1;
+    string sender_name = 2;
+    string sender_contact_person = 3;
+    string sender_address_line1 = 4;
+    string sender_postal_code_city = 5;
+
+    // Invoice Details
+    string invoice_number = 6;
+    string invoice_date = 7;
+    string due_date = 8;
+
+    // Invoice Items
+    repeated InvoiceDetail invoice_details = 9;
+    double total_amount = 10;
+    map<string, string> extra_items = 11;
+}
+
+message GenerateInvoicePdfResponse {
+    string pdf_file_key = 1;
+    int64 size =2;
+}
+
+
+
+service PdfService {
+    rpc GenerateAppointmentCardPdf(GenerateAppointmentCardRequest) returns (GenerateAppointmentCardResponse);
+    rpc GenerateContractPdf(GenerateContractRequest) returns (GenerateContractResponse);
+    rpc GenerateIncidentReportPdf(GenerateIncidentReportRequest) returns (GenerateIncidentReportResponse);
+    rpc GenerateInvoicePdf(GenerateInvoicePdfRequest) returns (GenerateInvoicePdfResponse);
+}
+
+
+
+
+
