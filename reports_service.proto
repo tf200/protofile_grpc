@@ -10,3 +10,8 @@ message PastReports {
 message GeneratedReports {
     string
 }
+
+
+service ReportGenerator {
+  rpc GenerateAutoReport(PastReports) returns (GeneratedReports)
+} 
