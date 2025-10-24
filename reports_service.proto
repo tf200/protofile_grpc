@@ -1,0 +1,12 @@
+syntaxn = "proto3"
+
+
+
+message PastReports {
+    string text = 1; 
+}
+
+
+message GeneratedReports {
+    string
+}
