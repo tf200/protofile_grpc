@@ -1,17 +1,15 @@
-syntaxn = "proto3"
-
-
+syntax = "proto3";
+package grpclient;
+option go_package = "maicare_go/grpclient";
 
 message PastReports {
     string text = 1; 
 }
 
-
 message GeneratedReports {
-    string
+    string report = 1;
 }
 
-
 service ReportGenerator {
-  rpc GenerateAutoReport(PastReports) returns (GeneratedReports)
-} 
+  rpc GenerateAutoReport(PastReports) returns (GeneratedReports);
+}
