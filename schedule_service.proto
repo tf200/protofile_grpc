@@ -1,0 +1,68 @@
+syntax = "proto3";
+package grpclient;
+option go_package = "maicare_go/grpclient";
+
+// =======================
+// REQUEST STRUCTURE
+// =======================
+
+message GenerateScheduleRequest {
+    repeated Employee employees = 1;
+    repeated Shift shifts = 2;
+    int32 week = 3;
+    int32 year = 4;
+}
+
+message Employee {
+    string id = 1;  // UUID as string
+    string first_name = 2;
+    string last_name = 3;
+    double target_hours = 4;
+}
+
+message Shift {
+    int32 id = 1;
+    string shift_name = 2;
+    string start_time = 3;  // ISO 8601 datetime string
+    string end_time = 4;    // ISO 8601 datetime string
+}
+
+// =======================
+// RESPONSE STRUCTURE
+// =======================
+
+message GenerateScheduleResponse {
+    string status = 1;  // "optimal" or "feasible"
+    map<string, DaySchedule> schedule = 2;  // key: day name (Monday, Tuesday, etc.)
+    repeated EmployeeSummary summary = 3;
+}
+
+message DaySchedule {
+    map<string, ShiftAssignment> shifts = 1;  // key: shift name
+}
+
+message ShiftAssignment {
+    repeated string employees = 1;  // List of employee names
+    string start_time = 2;  // ISO 8601 datetime string
+    string end_time = 3;    // ISO 8601 datetime string
+    double hours = 4;
+}
+
+message EmployeeSummary {
+    string id = 1;  // UUID as string
+    string first_name = 2;
+    string last_name = 3;
+    double target = 4;
+    double actual = 5;
+    double deviation = 6;
+    string status = 7;  // "perfect", "overtime", or "undertime"
+    map<string, int32> shifts = 8;  // key: shift name, value: count
+}
+
+// =======================
+// gRPC SERVICE
+// =======================
+
+service ScheduleService {
+    rpc GenerateSchedule(GenerateScheduleRequest) returns (GenerateScheduleResponse);
+}
