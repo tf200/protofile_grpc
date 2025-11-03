@@ -23,8 +23,8 @@ message Employee {
 message Shift {
     int32 id = 1;
     string shift_name = 2;
-    string start_time = 3;  // ISO 8601 datetime string
-    string end_time = 4;    // ISO 8601 datetime string
+    string start_time = 3;  // Time in HH:MM format (e.g., "08:00")
+    string end_time = 4;    // Time in HH:MM format (e.g., "16:00")
 }
 
 // =======================
@@ -42,10 +42,11 @@ message DaySchedule {
 }
 
 message ShiftAssignment {
-    repeated string employees = 1;  // List of employee names
-    string start_time = 2;  // ISO 8601 datetime string
-    string end_time = 3;    // ISO 8601 datetime string
-    double hours = 4;
+    int32 shift_id = 1;     // ID of the shift from the request
+    repeated string employees = 2;  // List of employee names
+    string start_time = 3;  // ISO 8601 datetime string
+    string end_time = 4;    // ISO 8601 datetime string
+    double hours = 5;
 }
 
 message EmployeeSummary {
