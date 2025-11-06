@@ -33,20 +33,47 @@ message Shift {
 
 message GenerateScheduleResponse {
     string status = 1;  // "optimal" or "feasible"
-    map<string, DaySchedule> schedule = 2;  // key: day name (Monday, Tuesday, etc.)
-    repeated EmployeeSummary summary = 3;
+    int32 week = 2;
+    int32 year = 3;
+    repeated ScheduledShift shifts = 4;  // Flat list for database
+    GridView grid_view = 5;  // Grid for frontend visualization
+    repeated EmployeeSummary summary = 6;
 }
 
-message DaySchedule {
-    map<string, ShiftAssignment> shifts = 1;  // key: shift name
+// Flat structure for database insertion
+message ScheduledShift {
+    string date = 1;  // ISO format: "2025-02-03"
+    string day_name = 2;  // "Monday", "Tuesday", etc.
+    int32 shift_id = 3;
+    string shift_name = 4;
+    string start_time = 5;  // ISO 8601 datetime string
+    string end_time = 6;  // ISO 8601 datetime string
+    double hours = 7;
+    repeated AssignedEmployee employees = 8;
 }
 
-message ShiftAssignment {
-    int32 shift_id = 1;     // ID of the shift from the request
-    repeated string employees = 2;  // List of employee names
-    string start_time = 3;  // ISO 8601 datetime string
-    string end_time = 4;    // ISO 8601 datetime string
-    double hours = 5;
+message AssignedEmployee {
+    string id = 1;  // UUID as string
+    string name = 2;  // Full name of the employee
+}
+
+// Grid structure for frontend visualization
+message GridView {
+    repeated string days = 1;  // ["Monday", "Tuesday", ...]
+    repeated string dates = 2;  // ["2025-02-03", "2025-02-04", ...]
+    map<string, GridDay> shifts_by_day = 3;  // key: day_name
+}
+
+message GridDay {
+    string date = 1;  // ISO format: "2025-02-03"
+    map<string, GridShift> shifts = 2;  // key: shift_name
+}
+
+message GridShift {
+    repeated string employees = 1;  // Employee names only
+    double hours = 2;
+    string start = 3;  // Time only: "08:00"
+    string end = 4;  // Time only: "16:00"
 }
 
 message EmployeeSummary {
