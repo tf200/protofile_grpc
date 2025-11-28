@@ -21,7 +21,7 @@ message Employee {
 }
 
 message Shift {
-    int32 id = 1;
+    string id = 1;
     string shift_name = 2;
     string start_time = 3;  // Time in HH:MM format (e.g., "08:00")
     string end_time = 4;    // Time in HH:MM format (e.g., "16:00")
@@ -44,7 +44,7 @@ message GenerateScheduleResponse {
 message ScheduledShift {
     string date = 1;  // ISO format: "2025-02-03"
     string day_name = 2;  // "Monday", "Tuesday", etc.
-    int32 shift_id = 3;
+    string shift_id = 3;
     string shift_name = 4;
     string start_time = 5;  // ISO 8601 datetime string
     string end_time = 6;  // ISO 8601 datetime string
